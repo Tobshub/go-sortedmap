@@ -5,12 +5,13 @@ import (
 	mrand "math/rand"
 	"time"
 
-	"github.com/umpc/go-sortedmap/asc"
+	"github.com/tobshub/go-sortedmap/asc"
 )
 
-func init() {
-	mrand.Seed(time.Now().UnixNano())
-}
+type (
+	TestRecord    = Record[string, time.Time]
+	TestSortedMap = SortedMap[string, time.Time]
+)
 
 func randStr(n int) string {
 	const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=~[]{}|:;<>,./?"
@@ -23,7 +24,7 @@ func randStr(n int) string {
 	return string(result)
 }
 
-func randRecord() Record {
+func randRecord() TestRecord {
 	year := mrand.Intn(2129)
 	if year < 1 {
 		year++
@@ -36,36 +37,36 @@ func randRecord() Record {
 	if day < 1 {
 		day++
 	}
-	return Record{
+	return TestRecord{
 		Key: randStr(42),
 		Val: time.Date(year, mth, day, 0, 0, 0, 0, time.UTC),
 	}
 }
 
-func randRecords(n int) []Record {
-	records := make([]Record, n)
+func randRecords(n int) []TestRecord {
+	records := make([]TestRecord, n)
 	for i := range records {
 		records[i] = randRecord()
 	}
 	return records
 }
 
-func verifyRecords(ch <-chan Record, reverse bool) error {
-	previousRec := Record{}
+func verifyRecords(ch <-chan TestRecord, reverse bool) error {
+	previousRec := TestRecord{}
 
 	if ch != nil {
 		for rec := range ch {
-			if previousRec.Key != nil {
+			if previousRec.Key != "" {
 				switch reverse {
 				case false:
-					if previousRec.Val.(time.Time).After(rec.Val.(time.Time)) {
+					if previousRec.Val.After(rec.Val) {
 						return fmt.Errorf("%v %v",
 							unsortedErr,
 							fmt.Sprintf("prev: %+v, current: %+v.", previousRec, rec),
 						)
 					}
 				case true:
-					if previousRec.Val.(time.Time).Before(rec.Val.(time.Time)) {
+					if previousRec.Val.Before(rec.Val) {
 						return fmt.Errorf("%v %v",
 							unsortedErr,
 							fmt.Sprintf("prev: %+v, current: %+v.", previousRec, rec),
@@ -82,9 +83,9 @@ func verifyRecords(ch <-chan Record, reverse bool) error {
 	return nil
 }
 
-func newSortedMapFromRandRecords(n int) (*SortedMap, []Record, error) {
+func newSortedMapFromRandRecords(n int) (*TestSortedMap, []TestRecord, error) {
 	records := randRecords(n)
-	sm := New(0, asc.Time)
+	sm := New[string, time.Time](0, asc.Time)
 	sm.BatchReplace(records)
 
 	iterCh, err := sm.IterCh()
@@ -96,12 +97,12 @@ func newSortedMapFromRandRecords(n int) (*SortedMap, []Record, error) {
 	return sm, records, verifyRecords(iterCh.Records(), false)
 }
 
-func newRandSortedMapWithKeys(n int) (*SortedMap, []Record, []interface{}, error) {
+func newRandSortedMapWithKeys(n int) (*TestSortedMap, []TestRecord, []string, error) {
 	sm, records, err := newSortedMapFromRandRecords(n)
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	keys := make([]interface{}, n)
+	keys := make([]string, n)
 	for n, rec := range records {
 		keys[n] = rec.Key
 	}

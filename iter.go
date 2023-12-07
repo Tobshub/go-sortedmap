@@ -7,7 +7,7 @@ import (
 
 // IterChCloser allows records to be read through a channel that is returned by the Records method.
 // IterChCloser values should be closed after use using the Close method.
-type IterChCloser[K comparable, V any] struct {
+type IterChCloser[K comparable, V comparable] struct {
 	ch       chan Record[K, V]
 	canceled chan struct{}
 }
@@ -38,7 +38,7 @@ type IterChParams[V comparable] struct {
 
 // IterCallbackFunc defines the type of function that is passed into an IterFunc method.
 // The function is passed a record value argument.
-type IterCallbackFunc[K comparable, V any] func(rec Record[K, V]) bool
+type IterCallbackFunc[K comparable, V comparable] func(rec Record[K, V]) bool
 
 func setBufSize(bufSize int) int {
 	// initialBufSize must be >= 1 or a blocked channel send goroutine may not exit.

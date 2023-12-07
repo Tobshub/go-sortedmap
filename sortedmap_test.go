@@ -10,7 +10,7 @@ const (
 )
 
 func TestNew(t *testing.T) {
-	sm := New(0, nil)
+	sm := New[int, any](0, nil)
 
 	if sm.idx == nil {
 		t.Fatal("TestNew failed: idx was nil!")
@@ -24,7 +24,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestNoOpFuncs(t *testing.T) {
-	if New(0, nil).lessFn(nil, nil) {
+	if New[int, any](0, nil).lessFn(nil, nil) {
 		t.Fatal("TestNoOpFuncs failed: lessFn returned true!")
 	}
 }

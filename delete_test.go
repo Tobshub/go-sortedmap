@@ -33,7 +33,7 @@ func TestBatchDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	keys := make([]interface{}, 0)
+	keys := make([]string, 0)
 	for i, rec := range records {
 		if i == 50 {
 			break
@@ -73,15 +73,15 @@ func TestBoundedDelete(t *testing.T) {
 
 	earlierDate := time.Date(200, 1, 1, 0, 0, 0, 0, time.UTC)
 
-	if err := sm.BoundedDelete(nil, nil); err != nil {
+	if err := sm.BoundedDelete(*new(time.Time), *new(time.Time)); err != nil {
 		t.Fatal(err)
 	}
 
-	if err := sm.BoundedDelete(nil, time.Now()); err != nil {
+	if err := sm.BoundedDelete(*new(time.Time), time.Now()); err != nil {
 		t.Fatal(err)
 	}
 
-	if err := sm.BoundedDelete(time.Now(), nil); err != nil {
+	if err := sm.BoundedDelete(time.Now(), *new(time.Time)); err != nil {
 		t.Fatal(err)
 	}
 

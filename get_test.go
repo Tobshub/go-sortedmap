@@ -1,6 +1,9 @@
 package sortedmap
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestGet(t *testing.T) {
 	sm, records, err := newSortedMapFromRandRecords(3)
@@ -9,7 +12,7 @@ func TestGet(t *testing.T) {
 	}
 
 	for i := range records {
-		if val, ok := sm.Get(records[i].Key); val == nil || !ok {
+		if val, ok := sm.Get(records[i].Key); val == *new(time.Time) || !ok {
 			t.Fatalf("TestGet failed: %v", notFoundErr)
 		}
 	}
@@ -34,7 +37,7 @@ func TestBatchGet(t *testing.T) {
 
 	values, results := sm.BatchGet(keys)
 	for i, ok := range results {
-		if values[i] == nil || !ok {
+		if values[i] == *new(time.Time) || !ok {
 			t.Fatalf("TestBatchGet failed: %v", notFoundErr)
 		}
 	}

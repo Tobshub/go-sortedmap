@@ -2,13 +2,14 @@ package sortedmap
 
 import (
 	"testing"
+	"time"
 
-	"github.com/umpc/go-sortedmap/asc"
+	"github.com/tobshub/go-sortedmap/asc"
 )
 
 func insertRecord(b *testing.B) {
 	records := randRecords(1)
-	sm := New(0, asc.Time)
+	sm := New[string, time.Time](0, asc.Time)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -16,14 +17,14 @@ func insertRecord(b *testing.B) {
 
 		b.StopTimer()
 		records = randRecords(1)
-		sm = New(0, asc.Time)
+		sm = New[string, time.Time](0, asc.Time)
 		b.StartTimer()
 	}
 }
 
 func batchInsertRecords(b *testing.B, n int) {
 	records := randRecords(n)
-	sm := New(0, asc.Time)
+	sm := New[string, time.Time](0, asc.Time)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -31,7 +32,7 @@ func batchInsertRecords(b *testing.B, n int) {
 
 		b.StopTimer()
 		records = randRecords(n)
-		sm = New(0, asc.Time)
+		sm = New[string, time.Time](0, asc.Time)
 		b.StartTimer()
 	}
 }

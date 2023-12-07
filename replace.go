@@ -1,5 +1,7 @@
 package sortedmap
 
+import "errors"
+
 func (sm *SortedMap[K, V]) replace(key K, val V) {
 	sm.delete(key)
 	sm.insert(key, val)
@@ -24,8 +26,12 @@ func (sm *SortedMap[K, V]) BatchReplace(recs []Record[K, V]) {
 // BatchReplaceMap adds all map keys and values to the collection.
 // Even if a key already exists, the value will be inserted.
 // Use BatchInsertMap for the alternative functionality.
-func (sm *SortedMap[K, V]) BatchReplaceMap(v map[K]V) {
+func (sm *SortedMap[K, V]) BatchReplaceMap(v map[K]V) error {
+	if v == nil {
+		return errors.New("Passed nil map")
+	}
 	for key, val := range v {
 		sm.replace(key, val)
 	}
+	return nil
 }

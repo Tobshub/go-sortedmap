@@ -13,7 +13,7 @@ func TestKeys(t *testing.T) {
 	i := 0
 	keys := sm.Keys()
 	for _, key := range keys {
-		if key == nil {
+		if key == "" {
 			t.Fatal("Key's value is nil.")
 		}
 		i++
@@ -34,7 +34,7 @@ func TestBoundedKeys(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, key := range keys {
-		if key == nil {
+		if key == "" {
 			t.Fatal("Key's value is nil.")
 		}
 		i++

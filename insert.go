@@ -31,6 +31,9 @@ func (sm *SortedMap[K, V]) BatchInsert(recs []Record[K, V]) []bool {
 // If a key already exists, the value will not be inserted and an error will be returned.
 // Use BatchReplaceMap for the alternative functionality.
 func (sm *SortedMap[K, V]) BatchInsertMap(v map[K]V) error {
+	if v == nil {
+		return fmt.Errorf("Passed nili map")
+	}
 	for key, val := range v {
 		if !sm.insert(key, val) {
 			return fmt.Errorf("Key already exists: %+v", key)

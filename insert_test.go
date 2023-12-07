@@ -2,14 +2,15 @@ package sortedmap
 
 import (
 	"testing"
+	"time"
 
-	"github.com/umpc/go-sortedmap/asc"
+	"github.com/tobshub/go-sortedmap/asc"
 )
 
 func TestInsert(t *testing.T) {
 	const n = 3
 	records := randRecords(n)
-	sm := New(n, asc.Time)
+	sm := New[string, time.Time](n, asc.Time)
 
 	for i := range records {
 		if !sm.Insert(records[i].Key, records[i].Val) {
@@ -53,7 +54,7 @@ func TestInsert(t *testing.T) {
 func TestBatchInsert(t *testing.T) {
 	const n = 1000
 	records := randRecords(n)
-	sm := New(n, asc.Time)
+	sm := New[string, time.Time](n, asc.Time)
 
 	for _, ok := range sm.BatchInsert(records) {
 		if !ok {
@@ -75,37 +76,16 @@ func TestBatchInsert(t *testing.T) {
 	}()
 }
 
-func TestBatchInsertMapWithInterfaceKeys(t *testing.T) {
+func TestBatchInsertMap(t *testing.T) {
 	const n = 1000
 	records := randRecords(n)
-	sm := New(n, asc.Time)
+	sm := New[string, time.Time](n, asc.Time)
 
 	i := 0
-	m := make(map[interface{}]interface{}, n)
+	m := make(map[string]time.Time, n)
 
 	for _, rec := range records {
 		m[rec.Key] = rec.Val
-		i++
-	}
-	if i == 0 {
-		t.Fatal("Records were not copied to the map.")
-	}
-
-	if err := sm.BatchInsertMap(m); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func TestBatchInsertMapWithStringKeys(t *testing.T) {
-	const n = 1000
-	records := randRecords(n)
-	sm := New(n, asc.Time)
-
-	i := 0
-	m := make(map[string]interface{}, n)
-
-	for _, rec := range records {
-		m[rec.Key.(string)] = rec.Val
 		i++
 	}
 	if i == 0 {
@@ -125,7 +105,7 @@ func TestBatchInsertMapWithExistingInterfaceKeys(t *testing.T) {
 	}
 
 	i := 0
-	m := make(map[interface{}]interface{}, n)
+	m := make(map[string]time.Time, n)
 
 	for _, rec := range records {
 		m[rec.Key] = rec.Val
@@ -148,10 +128,10 @@ func TestBatchInsertMapWithExistingStringKeys(t *testing.T) {
 	}
 
 	i := 0
-	m := make(map[string]interface{}, n)
+	m := make(map[string]time.Time, n)
 
 	for _, rec := range records {
-		m[rec.Key.(string)] = rec.Val
+		m[rec.Key] = rec.Val
 		i++
 	}
 	if i == 0 {
@@ -164,7 +144,7 @@ func TestBatchInsertMapWithExistingStringKeys(t *testing.T) {
 }
 
 func TestBatchInsertMapWithNilType(t *testing.T) {
-	if err := New(0, asc.Time).BatchInsertMap(nil); err == nil {
+	if err := New[string, time.Time](0, asc.Time).BatchInsertMap(nil); err == nil {
 		t.Fatal("a nil type was allowed where a supported map type is required.")
 	}
 }

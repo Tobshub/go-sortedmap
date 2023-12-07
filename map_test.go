@@ -1,6 +1,9 @@
 package sortedmap
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestMap(t *testing.T) {
 	sm, _, err := newSortedMapFromRandRecords(300)
@@ -9,8 +12,9 @@ func TestMap(t *testing.T) {
 	}
 	i := 0
 	m := sm.Map()
+	NilTime := *new(time.Time)
 	for _, val := range m {
-		if val == nil {
+		if val == NilTime {
 			t.Fatal("Map key's value is nil.")
 		}
 		i++

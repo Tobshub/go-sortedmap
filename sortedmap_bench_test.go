@@ -2,18 +2,17 @@ package sortedmap
 
 import (
 	"testing"
+	"time"
 
-	"github.com/umpc/go-sortedmap/asc"
+	"github.com/tobshub/go-sortedmap/asc"
 )
 
 func BenchmarkNew(b *testing.B) {
-	var sm *SortedMap
+	var sm *TestSortedMap
 
-	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		sm = New(0, asc.Time)
+		sm = New[string, time.Time](0, asc.Time)
 	}
-	b.StopTimer()
 
 	if sm == nil {
 	}

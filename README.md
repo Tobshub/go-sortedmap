@@ -1,13 +1,13 @@
 # SortedMap
 
-[![Build Status](https://travis-ci.org/umpc/go-sortedmap.svg?branch=master)](https://travis-ci.org/umpc/go-sortedmap) [![Coverage Status](https://codecov.io/github/umpc/go-sortedmap/badge.svg?branch=master)](https://codecov.io/github/umpc/go-sortedmap?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/umpc/go-sortedmap)](https://goreportcard.com/report/github.com/umpc/go-sortedmap) [![GoDoc](https://godoc.org/github.com/umpc/go-sortedmap?status.svg)](https://godoc.org/github.com/umpc/go-sortedmap)
+[![Go Report Card](https://goreportcard.com/badge/github.com/tobshub/go-sortedmap)](https://goreportcard.com/report/github.com/tobshub/go-sortedmap) [![GoDoc](https://godoc.org/github.com/tobshub/go-sortedmap?status.svg)](https://godoc.org/github.com/tobshub/go-sortedmap)
 
-SortedMap is a simple library that provides a value-sorted ```map[interface{}]interface{}``` type and methods combined from Go 1 map and slice primitives.
+SortedMap is a simple library that provides a value-sorted `map[K]V` type and methods combined from Go 1 map and slice primitives.
 
 This data structure allows for roughly constant-time reads and for efficiently iterating over only a section of stored values.
 
 ```sh
-go get -u github.com/umpc/go-sortedmap
+go get -u github.com/tobshub/go-sortedmap
 ```
 
 ### Complexity
@@ -25,8 +25,8 @@ import (
   "fmt"
   "time"
 
-  "github.com/umpc/go-sortedmap"
-  "github.com/umpc/go-sortedmap/asc"
+  "github.com/tobshub/go-sortedmap"
+  "github.com/tobshub/go-sortedmap/asc"
 )
 
 func main() {
@@ -59,58 +59,58 @@ func main() {
 }
 ```
 
-Check out the [examples](https://github.com/umpc/go-sortedmap/tree/master/examples), [documentation](https://godoc.org/github.com/umpc/go-sortedmap), and test files, for more features and further explanations.
+Check out the [examples](https://github.com/tobshub/go-sortedmap/tree/master/examples), [documentation](https://godoc.org/github.com/tobshub/go-sortedmap), and test files, for more features and further explanations.
 
 ## Benchmarks
 
 ```sh
-BenchmarkNew-8                               	20000000	        98.8 ns/op	      96 B/op	       2 allocs/op
+BenchmarkNew-8                               	    500	       88.52 ns/op
 
-BenchmarkHas1of1CachedRecords-8              	50000000	        27.3 ns/op	       0 B/op	       0 allocs/op
-BenchmarkHas1of1Records-8                    	20000000	        94.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkHas1of1CachedRecords-8              	    500	        7.754 ns/op
+BenchmarkHas1of1Records-8                    	    500	       88.17 ns/op
 
-BenchmarkGet1of1CachedRecords-8              	50000000	        27.3 ns/op	       0 B/op	       0 allocs/op
-BenchmarkGet1of1Records-8                    	20000000	        96.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet1of1CachedRecords-8              	    500	       12.22 ns/op
+BenchmarkGet1of1Records-8                    	    500	       78.72 ns/op
 
-BenchmarkDelete1of1Records-8                 	 5000000	       285 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete1of1Records-8                 	    500	      156.5 ns/op
 
-BenchmarkInsert1Record-8                     	 3000000	       442 ns/op	     304 B/op	       2 allocs/op
-BenchmarkReplace1of1Records-8                	 5000000	       378 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInsert1Record-8                     	    500	      835.6 ns/op
+BenchmarkReplace1of1Records-8                	    500	      314.2 ns/op
 
-BenchmarkDelete1of10Records-8                	 2000000	       615 ns/op	       0 B/op	       0 allocs/op
-BenchmarkDelete1of100Records-8               	 1000000	      1005 ns/op	       0 B/op	       0 allocs/op
-BenchmarkDelete1of1000Records-8              	 1000000	      1987 ns/op	       0 B/op	       0 allocs/op
-BenchmarkDelete1of10000Records-8             	  300000	      5473 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete1of10Records-8                	    500	      567.0 ns/op
+BenchmarkDelete1of100Records-8               	    500	     1895 ns/op
+BenchmarkDelete1of1000Records-8              	    500	     2314 ns/op
+BenchmarkDelete1of10000Records-8             	    500	    37247 ns/op
 
-BenchmarkBatchDelete10of10Records-8          	  500000	      3410 ns/op	      16 B/op	       1 allocs/op
-BenchmarkBatchDelete100of100Records-8        	   30000	     47069 ns/op	     112 B/op	       1 allocs/op
-BenchmarkBatchDelete1000of1000Records-8      	    2000	    721201 ns/op	    1024 B/op	       1 allocs/op
-BenchmarkBatchDelete10000of10000Records-8    	     100	  19275331 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkBatchDelete10of10Records-8          	    500	     2730 ns/op
+BenchmarkBatchDelete100of100Records-8        	    500	    38437 ns/op
+BenchmarkBatchDelete1000of1000Records-8      	    500	   586059 ns/op
+BenchmarkBatchDelete10000of10000Records-8    	    500	 16578997 ns/op
 
-BenchmarkBatchGet10of10Records-8             	 2000000	       902 ns/op	     176 B/op	       2 allocs/op
-BenchmarkBatchGet100of100Records-8           	  300000	      5550 ns/op	    1904 B/op	       2 allocs/op
-BenchmarkBatchGet1000of1000Records-8         	   30000	     49057 ns/op	   17408 B/op	       2 allocs/op
-BenchmarkBatchGet10000of10000Records-8       	    2000	    710611 ns/op	  174080 B/op	       2 allocs/op
+BenchmarkBatchGet10of10Records-8             	    500	      907.9 ns/op
+BenchmarkBatchGet100of100Records-8           	    500	     6139 ns/op
+BenchmarkBatchGet1000of1000Records-8         	    500	    43334 ns/op
+BenchmarkBatchGet10000of10000Records-8       	    500	   559872 ns/op
 
-BenchmarkBatchHas10of10Records-8             	 2000000	       742 ns/op	      16 B/op	       1 allocs/op
-BenchmarkBatchHas100of100Records-8           	  300000	      5102 ns/op	     112 B/op	       1 allocs/op
-BenchmarkBatchHas1000of1000Records-8         	   30000	     46257 ns/op	    1024 B/op	       1 allocs/op
-BenchmarkBatchHas10000of10000Records-8       	    3000	    519497 ns/op	   10240 B/op	       1 allocs/op
+BenchmarkBatchHas10of10Records-8             	    500	      629.0 ns/op
+BenchmarkBatchHas100of100Records-8           	    500	     5277 ns/op
+BenchmarkBatchHas1000of1000Records-8         	    500	    35924 ns/op
+BenchmarkBatchHas10000of10000Records-8       	    500	   510189 ns/op
 
-BenchmarkBatchInsert10Records-8              	  300000	      4164 ns/op	    1382 B/op	       8 allocs/op
-BenchmarkBatchInsert100Records-8             	   30000	     54184 ns/op	   14912 B/op	      19 allocs/op
-BenchmarkBatchInsert1000Records-8            	    2000	    844344 ns/op	  201969 B/op	      78 allocs/op
-BenchmarkBatchInsert10000Records-8           	     100	  25911455 ns/op	 2121554 B/op	     584 allocs/op
+BenchmarkBatchInsert10Records-8              	    500	     6093 ns/op
+BenchmarkBatchInsert100Records-8             	    500	    64635 ns/op
+BenchmarkBatchInsert1000Records-8            	    500	   861841 ns/op
+BenchmarkBatchInsert10000Records-8           	    500	 19096605 ns/op
 
-BenchmarkReplace1of10Records-8               	 1000000	      1021 ns/op	       0 B/op	       0 allocs/op
-BenchmarkReplace1of100Records-8              	 1000000	      1669 ns/op	       0 B/op	       0 allocs/op
-BenchmarkReplace1of1000Records-8             	  500000	      3187 ns/op	       0 B/op	       0 allocs/op
-BenchmarkReplace1of10000Records-8            	  200000	      8778 ns/op	       0 B/op	       0 allocs/op
+BenchmarkReplace1of10Records-8               	    500	      800.1 ns/op
+BenchmarkReplace1of100Records-8              	    500	     2721 ns/op
+BenchmarkReplace1of1000Records-8             	    500	     3647 ns/op
+BenchmarkReplace1of10000Records-8            	    500	    56905 ns/op
 
-BenchmarkBatchReplace10of10Records-8         	  200000	      6934 ns/op	       0 B/op	       0 allocs/op
-BenchmarkBatchReplace100of100Records-8       	   10000	    100186 ns/op	       0 B/op	       0 allocs/op
-BenchmarkBatchReplace1000of1000Records-8     	    1000	   1546355 ns/op	       0 B/op	       0 allocs/op
-BenchmarkBatchReplace10000of10000Records-8   	      20	  58396360 ns/op	       0 B/op	       0 allocs/op
+BenchmarkBatchReplace10of10Records-8         	    500	     8055 ns/op
+BenchmarkBatchReplace100of100Records-8       	    500	   104597 ns/op
+BenchmarkBatchReplace1000of1000Records-8     	    500	  1580840 ns/op
+BenchmarkBatchReplace10000of10000Records-8   	    500	 53922019 ns/op
 ```
 
 The above benchmark tests were ran using a 4.0GHz Intel Core i7-4790K (Haswell) CPU.

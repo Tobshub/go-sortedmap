@@ -2,14 +2,14 @@ package sortedmap
 
 // SortedMap contains a map, a slice, and references to one or more comparison functions.
 // SortedMap is not concurrency-safe, though it can be easily wrapped by a developer-defined type.
-type SortedMap[K, V comparable] struct {
+type SortedMap[K comparable, V any] struct {
 	idx    map[K]V
 	sorted []K
 	lessFn ComparisonFunc[V]
 }
 
 // Record defines a type used in batching and iterations, where keys and values are used together.
-type Record[K, V comparable] struct {
+type Record[K comparable, V any] struct {
 	Key K
 	Val V
 }
@@ -30,7 +30,7 @@ func setComparisonFunc[V any](cmpFn ComparisonFunc[V]) ComparisonFunc[V] {
 
 // New creates and initializes a new SortedMap structure and then returns a reference to it.
 // New SortedMaps are created with a backing map/slice of length/capacity n.
-func New[K, V comparable](n int, cmpFn ComparisonFunc[V]) *SortedMap[K, V] {
+func New[K comparable, V any](n int, cmpFn ComparisonFunc[V]) *SortedMap[K, V] {
 	return &SortedMap[K, V]{
 		idx:    make(map[K]V, n),
 		sorted: make([]K, 0, n),

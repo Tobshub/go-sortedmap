@@ -1,6 +1,9 @@
 package sortedmap
 
-import "sort"
+import (
+	"reflect"
+	"sort"
+)
 
 func (sm *SortedMap[K, V]) setBoundIdx(boundVal V) int {
 	return sort.Search(len(sm.sorted), func(i int) bool {
@@ -14,16 +17,14 @@ func (sm *SortedMap[K, V]) boundsIdxSearch(lowerBound, upperBound V) []int {
 		return nil
 	}
 
-	NilV := *new(V)
-
-	if lowerBound != NilV && upperBound != NilV {
+	if !reflect.ValueOf(lowerBound).IsZero() && !reflect.ValueOf(upperBound).IsZero() {
 		if sm.lessFn(upperBound, lowerBound) {
 			return nil
 		}
 	}
 
 	lowerBoundIdx := 0
-	if lowerBound != NilV {
+	if !reflect.ValueOf(lowerBound).IsZero() {
 		lowerBoundIdx = sm.setBoundIdx(lowerBound)
 
 		if lowerBoundIdx == smLen {
@@ -35,7 +36,7 @@ func (sm *SortedMap[K, V]) boundsIdxSearch(lowerBound, upperBound V) []int {
 	}
 
 	upperBoundIdx := smLen - 1
-	if upperBound != NilV {
+	if !reflect.ValueOf(upperBound).IsZero() {
 		upperBoundIdx = sm.setBoundIdx(upperBound)
 		if upperBoundIdx == smLen {
 			upperBoundIdx--

@@ -28,6 +28,10 @@ func setComparisonFunc[V any](cmpFn ComparisonFunc[V]) ComparisonFunc[V] {
 	return cmpFn
 }
 
+func (m *SortedMap[K, V]) SetComparisonFunc(cmpFn ComparisonFunc[V]) {
+	m.lessFn = setComparisonFunc(cmpFn)
+}
+
 // New creates and initializes a new SortedMap structure and then returns a reference to it.
 // New SortedMaps are created with a backing map/slice of length/capacity n.
 func New[K comparable, V any](n int, cmpFn ComparisonFunc[V]) *SortedMap[K, V] {

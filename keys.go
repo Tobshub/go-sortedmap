@@ -2,7 +2,7 @@ package sortedmap
 
 import "errors"
 
-func (sm *SortedMap) keys(lowerBound, upperBound interface{}) ([]interface{}, error) {
+func (sm *SortedMap[K, V]) keys(lowerBound, upperBound V) ([]K, error) {
 	idxBounds := sm.boundsIdxSearch(lowerBound, upperBound)
 	if idxBounds == nil {
 		return nil, errors.New(noValuesErr)
@@ -12,13 +12,13 @@ func (sm *SortedMap) keys(lowerBound, upperBound interface{}) ([]interface{}, er
 
 // Keys returns a slice containing sorted keys.
 // The returned slice is valid until the next modification to the SortedMap structure.
-func (sm *SortedMap) Keys() []interface{} {
-	keys, _ := sm.keys(nil, nil)
+func (sm *SortedMap[K, V]) Keys() []K {
+	keys, _ := sm.keys(*new(V), *new(V))
 	return keys
 }
 
 // BoundedKeys returns a slice containing sorted keys equal to or between the given bounds.
 // The returned slice is valid until the next modification to the SortedMap structure.
-func (sm *SortedMap) BoundedKeys(lowerBound, upperBound interface{}) ([]interface{}, error) {
+func (sm *SortedMap[K, V]) BoundedKeys(lowerBound, upperBound V) ([]K, error) {
 	return sm.keys(lowerBound, upperBound)
 }

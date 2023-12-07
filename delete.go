@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-func (sm *SortedMap) delete(key interface{}) bool {
+func (sm *SortedMap[K, V]) delete(key K) bool {
 	if val, ok := sm.idx[key]; ok {
 
 		smLen := len(sm.sorted)
@@ -30,7 +30,7 @@ func (sm *SortedMap) delete(key interface{}) bool {
 	return false
 }
 
-func (sm *SortedMap) boundedDelete(lowerBound, upperBound interface{}) error {
+func (sm *SortedMap[K, V]) boundedDelete(lowerBound, upperBound V) error {
 	iterBounds := sm.boundsIdxSearch(lowerBound, upperBound)
 	if iterBounds == nil {
 		return errors.New(noValuesErr)
@@ -45,12 +45,12 @@ func (sm *SortedMap) boundedDelete(lowerBound, upperBound interface{}) error {
 
 // Delete removes a value from the collection, using the given key.
 // Because the index position of each sorted key changes on each insert and a simpler structure was ideal, deletes can have a worse-case complexity of O(n), meaning the goroutine must loop through the sorted slice to find and delete the given key.
-func (sm *SortedMap) Delete(key interface{}) bool {
+func (sm *SortedMap[K, V]) Delete(key K) bool {
 	return sm.delete(key)
 }
 
 // BatchDelete removes values from the collection, using the given keys, returning a slice of the results.
-func (sm *SortedMap) BatchDelete(keys []interface{}) []bool {
+func (sm *SortedMap[K, V]) BatchDelete(keys []K) []bool {
 	results := make([]bool, len(keys))
 	for i, key := range keys {
 		results[i] = sm.delete(key)
@@ -60,6 +60,6 @@ func (sm *SortedMap) BatchDelete(keys []interface{}) []bool {
 
 // BoundedDelete removes values that are between the given values from the collection.
 // BoundedDelete returns true if the operation was successful, or false otherwise.
-func (sm *SortedMap) BoundedDelete(lowerBound, upperBound interface{}) error {
+func (sm *SortedMap[K, V]) BoundedDelete(lowerBound, upperBound V) error {
 	return sm.boundedDelete(lowerBound, upperBound)
 }

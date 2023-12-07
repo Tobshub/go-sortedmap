@@ -2,26 +2,28 @@ package sortedmap
 
 import "sort"
 
-func (sm *SortedMap) setBoundIdx(boundVal interface{}) int {
+func (sm *SortedMap[K, V]) setBoundIdx(boundVal V) int {
 	return sort.Search(len(sm.sorted), func(i int) bool {
 		return sm.lessFn(boundVal, sm.idx[sm.sorted[i]])
 	})
 }
 
-func (sm *SortedMap) boundsIdxSearch(lowerBound, upperBound interface{}) []int {
+func (sm *SortedMap[K, V]) boundsIdxSearch(lowerBound, upperBound V) []int {
 	smLen := len(sm.sorted)
 	if smLen == 0 {
 		return nil
 	}
 
-	if lowerBound != nil && upperBound != nil {
+	NilV := *new(V)
+
+	if lowerBound != NilV && upperBound != NilV {
 		if sm.lessFn(upperBound, lowerBound) {
 			return nil
 		}
 	}
 
 	lowerBoundIdx := 0
-	if lowerBound != nil {
+	if lowerBound != NilV {
 		lowerBoundIdx = sm.setBoundIdx(lowerBound)
 
 		if lowerBoundIdx == smLen {
@@ -33,7 +35,7 @@ func (sm *SortedMap) boundsIdxSearch(lowerBound, upperBound interface{}) []int {
 	}
 
 	upperBoundIdx := smLen - 1
-	if upperBound != nil {
+	if upperBound != NilV {
 		upperBoundIdx = sm.setBoundIdx(upperBound)
 		if upperBoundIdx == smLen {
 			upperBoundIdx--

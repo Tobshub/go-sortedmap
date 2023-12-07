@@ -12,10 +12,10 @@ const (
 func TestNew(t *testing.T) {
 	sm := New[int, any](0, nil)
 
-	if sm.idx == nil {
+	if sm.Idx == nil {
 		t.Fatal("TestNew failed: idx was nil!")
 	}
-	if sm.sorted == nil {
+	if sm.Sorted == nil {
 		t.Fatal("TestNew failed: sorted was nil!")
 	}
 	if sm.lessFn == nil {

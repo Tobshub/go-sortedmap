@@ -7,7 +7,7 @@ func (sm *SortedMap[K, V]) keys(lowerBound, upperBound V) ([]K, error) {
 	if idxBounds == nil {
 		return nil, errors.New(noValuesErr)
 	}
-	return sm.sorted[idxBounds[0] : idxBounds[1]+1], nil
+	return sm.Sorted[idxBounds[0] : idxBounds[1]+1], nil
 }
 
 // Keys returns a slice containing sorted keys.

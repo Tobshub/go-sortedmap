@@ -3,8 +3,8 @@ package sortedmap
 // SortedMap contains a map, a slice, and references to one or more comparison functions.
 // SortedMap is not concurrency-safe, though it can be easily wrapped by a developer-defined type.
 type SortedMap[K comparable, V any] struct {
-	idx    map[K]V
-	sorted []K
+	Idx    map[K]V
+	Sorted []K
 	lessFn ComparisonFunc[V]
 }
 
@@ -36,13 +36,13 @@ func (m *SortedMap[K, V]) SetComparisonFunc(cmpFn ComparisonFunc[V]) {
 // New SortedMaps are created with a backing map/slice of length/capacity n.
 func New[K comparable, V any](n int, cmpFn ComparisonFunc[V]) *SortedMap[K, V] {
 	return &SortedMap[K, V]{
-		idx:    make(map[K]V, n),
-		sorted: make([]K, 0, n),
+		Idx:    make(map[K]V, n),
+		Sorted: make([]K, 0, n),
 		lessFn: setComparisonFunc(cmpFn),
 	}
 }
 
 // Len returns the number of items in the collection.
 func (sm *SortedMap[K, V]) Len() int {
-	return len(sm.sorted)
+	return len(sm.Sorted)
 }

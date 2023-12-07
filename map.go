@@ -5,5 +5,5 @@ package sortedmap
 // The map can be used with ether the Keys or BoundedKeys methods to select a range of items
 // and iterate over them using a slice for-range loop, rather than a channel for-range loop.
 func (sm *SortedMap[K, V]) Map() map[K]V {
-	return sm.idx
+	return sm.Idx
 }

@@ -2,7 +2,7 @@ package sortedmap
 
 // Has checks if the key exists in the collection.
 func (sm *SortedMap[K, V]) Has(key K) bool {
-	_, ok := sm.idx[key]
+	_, ok := sm.Idx[key]
 	return ok
 }
 
@@ -10,7 +10,7 @@ func (sm *SortedMap[K, V]) Has(key K) bool {
 func (sm *SortedMap[K, V]) BatchHas(keys []K) []bool {
 	results := make([]bool, len(keys))
 	for i, key := range keys {
-		_, results[i] = sm.idx[key]
+		_, results[i] = sm.Idx[key]
 	}
 	return results
 }

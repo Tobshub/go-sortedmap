@@ -53,8 +53,8 @@ func setBufSize(bufSize int) int {
 
 func (sm *SortedMap[K, V]) recordFromIdx(i int) Record[K, V] {
 	rec := Record[K, V]{}
-	rec.Key = sm.sorted[i]
-	rec.Val = sm.idx[rec.Key]
+	rec.Key = sm.Sorted[i]
+	rec.Val = sm.Idx[rec.Key]
 
 	return rec
 }

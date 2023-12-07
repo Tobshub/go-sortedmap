@@ -3,9 +3,9 @@ package sortedmap
 import "fmt"
 
 func (sm *SortedMap[K, V]) insert(key K, val V) bool {
-	if _, ok := sm.idx[key]; !ok {
-		sm.idx[key] = val
-		sm.sorted = sm.insertSort(key, val)
+	if _, ok := sm.Idx[key]; !ok {
+		sm.Idx[key] = val
+		sm.Sorted = sm.insertSort(key, val)
 		return true
 	}
 	return false

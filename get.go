@@ -2,7 +2,7 @@ package sortedmap
 
 // Get retrieves a value from the collection, using the given key.
 func (sm *SortedMap[K, V]) Get(key K) (V, bool) {
-	val, ok := sm.idx[key]
+	val, ok := sm.Idx[key]
 	return val, ok
 }
 
@@ -12,7 +12,7 @@ func (sm *SortedMap[K, V]) BatchGet(keys []K) ([]V, []bool) {
 	results := make([]bool, len(keys))
 
 	for i, key := range keys {
-		vals[i], results[i] = sm.idx[key]
+		vals[i], results[i] = sm.Idx[key]
 	}
 
 	return vals, results

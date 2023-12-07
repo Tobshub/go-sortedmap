@@ -6,11 +6,11 @@ import (
 )
 
 func (sm *SortedMap[K, V]) delete(key K) bool {
-	if val, ok := sm.idx[key]; ok {
+	if val, ok := sm.Idx[key]; ok {
 
-		smLen := len(sm.sorted)
+		smLen := len(sm.Sorted)
 		i := sort.Search(smLen, func(i int) bool {
-			return sm.lessFn(val, sm.idx[sm.sorted[i]])
+			return sm.lessFn(val, sm.Idx[sm.Sorted[i]])
 		})
 
 		if i == smLen {
@@ -18,12 +18,12 @@ func (sm *SortedMap[K, V]) delete(key K) bool {
 		} else if i < smLen-1 {
 			i++
 		}
-		for sm.sorted[i] != key {
+		for sm.Sorted[i] != key {
 			i--
 		}
 
-		delete(sm.idx, key)
-		sm.sorted = deleteInterface(sm.sorted, i)
+		delete(sm.Idx, key)
+		sm.Sorted = deleteInterface(sm.Sorted, i)
 
 		return true
 	}
@@ -36,8 +36,8 @@ func (sm *SortedMap[K, V]) boundedDelete(lowerBound, upperBound V) error {
 		return errors.New(noValuesErr)
 	}
 	for i, deleted := iterBounds[0], 0; i <= iterBounds[1]-deleted; i++ {
-		delete(sm.idx, sm.sorted[i])
-		sm.sorted = deleteInterface(sm.sorted, i)
+		delete(sm.Idx, sm.Sorted[i])
+		sm.Sorted = deleteInterface(sm.Sorted, i)
 		deleted++
 	}
 	return nil
